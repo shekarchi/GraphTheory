@@ -1,0 +1,25 @@
+import java.util.HashSet;
+import java.util.Scanner;
+
+class Node {
+	public HashSet <Node> neighbours;
+	public Node () {
+		neighbours = new HashSet<>();
+	}
+}
+
+public class QuesOneA {
+
+	public static void main(String[] args) {
+		
+		int a, b, m;
+		
+		Scanner sc = new Scanner(System.in);
+		a = sc.nextInt();
+		b = sc.nextInt();
+		m = sc.nextInt();
+		
+		
+	}
+	
+}

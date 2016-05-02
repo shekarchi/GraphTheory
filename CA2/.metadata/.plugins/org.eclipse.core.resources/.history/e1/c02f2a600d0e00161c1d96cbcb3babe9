@@ -1,0 +1,104 @@
+import java.util.*;
+
+public class Main {
+	
+	public static double doubleOf(int a, int b) {
+		double at = a;
+		double bt = b;
+		return (b==0)?0.0:at/bt;
+	}
+	
+	public static void main(String[] args) {
+		
+		int n, m, k;
+		
+		Scanner sc = new Scanner(System.in);
+		n = sc.nextInt();
+		m = sc.nextInt();
+		k = sc.nextInt();
+		
+		HashSet<Node> V, U, S;
+		ArrayList<Node> graph = new ArrayList<>();
+		for(int i=0; i<n; i++) 
+			graph.add(new Node());
+		V = new HashSet<>(graph);
+		U = new HashSet<Node>();
+		for(int i=0; i<k; i++) {
+			int tmp;
+			tmp = sc.nextInt();
+			U.add(graph.get(tmp));
+		}
+		S = new HashSet<>(V);
+		S.removeAll(U);
+		
+		int x, y;
+		for(int i=0; i<m; i++) {
+			x = sc.nextInt();
+			y = sc.nextInt();
+			graph.get(x).neighbours.add(graph.get(y));
+			graph.get(y).neighbours.add(graph.get(x));
+		}
+		//end of getting input
+		
+		for(Node nn: S)
+		{
+			nn.computeNs(S);
+		}
+		
+		ArrayList<Node> Sarray;
+		
+		double bestValue = 0.0;
+		
+		while(!S.isEmpty()) {
+			Sarray = new ArrayList<Node>(S);
+			Node min = Sarray.get(0);
+			for(Node t : Sarray) {
+				if(t.value() < min.value())
+					min = t;
+			}
+			bestValue = Math.max(min.value(), bestValue);
+			for(Node nn : min.neighbours) {
+				nn.SNeighbours.remove(min);
+			}
+			S.remove(min);
+		}
+		System.out.println(bestValue);
+	}
+}
+
+class Node {
+	public HashSet <Node> neighbours;
+	public HashSet<Node> SNeighbours;
+	public Node () {
+		neighbours = new HashSet<>();
+		SNeighbours = new HashSet<>();
+	}
+	
+	public void computeNs(HashSet<Node> S) {
+		SNeighbours = new HashSet<>(S);
+		SNeighbours.retainAll(neighbours);
+	}
+	
+	public double value() {
+		double Snum = SNeighbours.size();
+		double VNum = neighbours.size();
+		return (VNum==0)?0.0:Snum/VNum;
+	}
+}
+
+class MyFraction {
+	public int n;
+	public int d;
+	public MyFraction (int _n, int _d) {
+		n = _n;
+		d = _d;
+	}
+	public double toDouble() {
+		double nt = n;
+		double dt = d;
+		return (d==0)?0.0:nt/dt; 
+	}
+}
+
+
+

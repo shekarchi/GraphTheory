@@ -1,0 +1,129 @@
+/*
+**
+**for this implementation, I assume that index value is from 0 to n-1
+*/
+
+#include <iostream>
+#include <vector>
+#include <limits.h>
+using namespace std;
+
+int main() 
+{
+	//get input
+	int n, m, k;
+	cin >> n >> m >> k;
+	vector< vector<bool> > graph;
+	for (int i=0; i<n; i++)
+	{
+		vector<bool> tmp(n, false);
+		graph.push_back(tmp);
+	}
+	vector<double> value(n, 0);
+	vector<bool> deleted(n, false);
+	vector<int> Nv(n, 0);
+	vector<bool> isInU(n, false);
+	int index;
+	for (int i=0; i<k; i++)
+	{
+		cin >> index;
+		isInU[index] = true;
+	}
+	int x,y;
+	for(int i=0; i<m; i++) 
+	{
+		cin >> x >> y;
+		graph[x][y] = true;
+		graph[y][x] = true;
+		Nv[x]++;
+		Nv[y]++;
+	}
+	//END of get input
+
+	//print graph
+	// for (int i=0; i<n; i++)
+	// {
+	// 	for(int j=0; j<n; j++)
+	// 		cout << graph[i][j];
+	// 	cout << endl;
+	// }
+
+	//initialize S = V-U
+	vector <int> VminusU;
+	double globalMaxS = 0.0;
+	double minS1 = INT_MAX;
+	for(int i=0; i<n; i++)
+	{
+		if(!isInU[i])
+		{
+			VminusU.push_back(i);
+			int sum = 0;
+			for(int j=0; j<n ; j++)
+			{
+				if(!isInU[j] && graph[i][j])
+					sum++;
+			}
+			value[i] = (Nv[i]==0)?0.0:(double)sum/(double)Nv[i];
+			if(value[i] < minS1)
+				minS1 = value[i];
+		}
+	}
+	globalMaxS = minS1;
+	//END of init
+
+	// cerr << "initial globalMaxS: " << globalMaxS << endl<<endl;
+	// for (int i=0; i<n; i++)
+	// 	cout << value[i] << ",\t";
+	// cout << endl;
+
+	//update S to upper value
+	for(int i=0; i<VminusU.size(); i++)
+	{
+		int min = 0;
+		for (int m=1; m<VminusU.size(); m++)
+			if(!deleted[VminusU[m]] && value[VminusU[m]]<value[VminusU[min]])
+				min = m;
+
+		cerr << "\nfound min is: " << VminusU[min] << endl;
+
+		int j = VminusU[min];//node index should be removed
+		deleted[j] = true;
+		if(value[j] == 0)//means Nv[j]=0 or has no nghbr out of U
+		{	
+			cerr << "--> a node _" << j << "_ with Nv=0 is found: " << endl;
+			int t;
+			for(t=0; t<n; t++)
+				if(!deleted[t] && !isInU[t])
+				{
+					globalMaxS = value[t];
+					cerr << endl<< "--> new value is assigned to globalMaxS - " << globalMaxS << endl;
+					break;
+				}
+			for(int s=t; s<n; s++)
+				if(!deleted[s] && !isInU[s])
+				{
+					cerr << "--> other value for S could be? " <<value[s] << " cmp " << globalMaxS << endl;
+					if(value[s] < globalMaxS)
+						globalMaxS = value[s];
+				}
+			cerr << "updated value for globalMaxS after  removing iso node is " << globalMaxS << endl<< endl;
+			continue;
+		}
+		double minS = INT_MAX;
+		for(int t=0; t<n; t++)
+			if(graph[j][t] && !isInU[t])//&& !deleted[t]
+			{
+				cerr << endl<< "loop for updating globalMaxS and found nghbr in V-U" << endl;
+				cerr << "before any update for t="<<t<<" new value is " << value[t] << endl;
+				value[t] -= 1.0/(double)Nv[t];//(1.0/(double)(Nv[t]-1))*(1-value[t]);
+				cerr << "because of "<<j<< " for t="<<t<<" new value is " << value[t] << endl;
+				if(value[t] < minS)
+					minS = value[t];
+				cerr << "and so minS is: " << minS << endl;
+			}
+		if(minS > globalMaxS)
+			globalMaxS = minS;
+		cerr << "and so globalMaxS is:: " << globalMaxS << endl<< endl;
+	}
+	cout <<endl<< "finally: " << globalMaxS << endl;
+}

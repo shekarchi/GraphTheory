@@ -1,0 +1,36 @@
+import java.util.HashSet;
+import java.util.Scanner;
+
+class BiNode {
+	public int id;
+	public HashSet <BiNode> neighbours;
+	public BiNode (int _id) {
+		id = _id;
+		neighbours = new HashSet<>();
+	}
+}
+
+public class QuesOneA {
+
+	public static void main(String[] args) {
+		
+		int a, b, m;
+		
+		Scanner sc = new Scanner(System.in);
+		a = sc.nextInt();
+		b = sc.nextInt();
+		m = sc.nextInt();
+		
+		HashSet<Node> U = new HashSet<Node>();
+		HashSet<Node> V = new HashSet<Node>();
+		
+		int tmpf = -1;
+		int tmpt = -1;
+		for(int i=0; i<m; i++) {
+			tmpf = sc.nextInt();
+			tmpt = sc.nextInt();;
+			U.add();
+		}
+	}
+	
+}

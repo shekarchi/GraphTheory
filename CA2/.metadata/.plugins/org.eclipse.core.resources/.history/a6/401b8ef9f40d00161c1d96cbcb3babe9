@@ -1,0 +1,17 @@
+import java.util.*;
+
+public class Main {
+	public static void main(String[] args) {
+		System.out.println("hello world");
+		
+		int n, m, k, index, x, y;
+		
+	}
+}
+
+class Node {
+	public HashSet <Node> neighbours;
+	public Node () {
+		neighbours = new HashSet<>();
+	}
+}

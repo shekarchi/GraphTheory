@@ -1,0 +1,15 @@
+import java.util.Scanner;
+
+
+public class QuesOneA {
+
+	public static void main(String[] args) {
+		
+		int n, m, k;
+		
+		Scanner sc = new Scanner(System.in);
+		n = sc.nextInt();
+		m = sc.nextInt();
+		k = sc.nextInt();
+	}
+}

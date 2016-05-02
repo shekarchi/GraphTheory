@@ -1,0 +1,35 @@
+import java.util.*;
+
+public class Main {
+	public static void main(String[] args) {
+		System.out.println("hello world");
+		
+		int n, m, k, x, y;
+		
+		Scanner sc = new Scanner(System.in);
+		n = sc.nextInt();
+		m = sc.nextInt();
+		k = sc.nextInt();
+		
+		HashSet V, U, S;
+		ArrayList<Node> graph = new ArrayList<>();
+		for(int i=0; i<n; i++) 
+			graph.add(new Node());
+		V = new HashSet<>(graph);
+		for(int i=0; i<k; i++) {
+			int tmp;
+			tmp = sc.nextInt();
+			U.add(graph.get(tmp));
+		}
+		S = new HashSet<>(V);
+		S.removeAll(U);
+		
+	}
+}
+
+class Node {
+	public HashSet <Node> neighbours;
+	public Node () {
+		neighbours = new HashSet<>();
+	}
+}
